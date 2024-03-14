@@ -16,6 +16,7 @@ public class DeplacementSimple : MonoBehaviour
     private bool enCourse; // Indique si le personnage court
     private float vitesseDeplacement = 5f;
     private Rigidbody rb; // Référence au Rigidbody attaché au joueur
+    public bool walkDisabled = false;
 
     void Start()
     {
@@ -38,7 +39,7 @@ public class DeplacementSimple : MonoBehaviour
         }
 
         // Déplacement vers l'avant
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) && !walkDisabled)
         {
             rotate.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             if (CanWalkForward())
@@ -48,7 +49,7 @@ public class DeplacementSimple : MonoBehaviour
                 enMarche = true;
             }
         }
-        else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.A)) // Déplacement vers l'arrière
+        else if ((Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.A)) && !walkDisabled) // Déplacement vers l'arrière
         {
             rotate.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             if (CanWalkBack())
@@ -58,7 +59,7 @@ public class DeplacementSimple : MonoBehaviour
                 enMarche = true;
             }
         }
-        else if (Input.GetKey(KeyCode.S) && worldmap == true) // Déplacement vers l'arrière
+        else if ((Input.GetKey(KeyCode.S) && worldmap == true) && !walkDisabled) // Déplacement vers l'arrière
         {
             rotate.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
             if (CanWalkRight())
@@ -68,7 +69,7 @@ public class DeplacementSimple : MonoBehaviour
                 enMarche = true;
             }
         }
-        else if ((Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W)) && worldmap == true) // Déplacement vers l'arrière
+        else if (((Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W)) && worldmap == true) && !walkDisabled) // Déplacement vers l'arrière
         {
             rotate.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
             if (CanWalkLeft())
@@ -84,7 +85,7 @@ public class DeplacementSimple : MonoBehaviour
         }
 
         // Saut
-        if (Input.GetKeyDown(toucheSaut) && ToucheUnJumper())
+        if (Input.GetKeyDown(toucheSaut) && ToucheUnJumper() && !walkDisabled)
         {
             Jump();
         }
@@ -206,5 +207,10 @@ public class DeplacementSimple : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void marcheAllowed(bool allowed)
+    {
+        walkDisabled = !allowed;
     }
 }

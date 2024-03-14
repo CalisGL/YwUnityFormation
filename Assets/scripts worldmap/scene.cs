@@ -8,9 +8,12 @@ public class ChangementScene : MonoBehaviour
     public string nomDeLaScene = "NomDeLaScene"; // Nom de la scène à charger
     public int levelX = 1; // Numéro du niveau à charger
     public GameObject originObject;
+    public GameObject canvaChoice;
+
 
     // Détermine si le joueur est en contact avec cet objet
     public bool joueurEnContact = false;
+    public DeplacementSimple controller;
 
     // Update est appelé une fois par frame
     void Update()
@@ -21,7 +24,8 @@ public class ChangementScene : MonoBehaviour
         // Vérifie si la touche de changement de scène est enfoncée et si le joueur est en contact avec l'objet
         if (Input.GetKeyDown(toucheChangementScene) && joueurEnContact)
         {
-            LoadLevel(levelX);
+            controller.walkDisabled = true;
+            canvaChoice.SetActive(true);
         }
         if (Input.GetKeyDown(toucheWorldmap))
         {
@@ -51,14 +55,21 @@ public class ChangementScene : MonoBehaviour
         return false;
     }
 
-    void LoadLevel(int level)
+    public void LoadLevel(int level)
     {
         string levelName = "level" + level.ToString();
         SceneManager.LoadScene(levelName);
+        controller.walkDisabled = true;
     }
 
-    void LoadWorldmap()
+    public void LoadWorldmap()
     {
         SceneManager.LoadScene("worldmap");
+    }
+
+    public void Annuler()
+    {
+        canvaChoice.SetActive(false);
+        controller.walkDisabled = false;
     }
 }
