@@ -15,6 +15,8 @@ public class move : MonoBehaviour
     public GameObject vie1;
     public GameObject vie2;
     public GameObject vie3;
+    public GameObject onigiri;
+    public bool onigiriTook;
     
     // Start is called before the first frame update
     void Start()
@@ -66,6 +68,17 @@ public class move : MonoBehaviour
             StartCoroutine(InvincibilityTimer()); // Démarre le timer d'invincibilité
         }
 
+        if(touchAnOnigiri())
+        {
+            if(vies < 3 && !onigiriTook)
+            {
+                vies += 1;
+            }
+            onigiri.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
+            onigiriTook = true;
+            StartCoroutine(onigiriTaken());
+        }
+
         if(vies == 3)
         {
             vie1.SetActive(true);
@@ -111,10 +124,29 @@ public class move : MonoBehaviour
         return false;
     }
 
+    bool touchAnOnigiri()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.5f))
+        {
+            if (hit.collider.CompareTag("onigiri"))
+            {
+                return true; 
+            }
+        }
+        return false;
+    }
+
     IEnumerator InvincibilityTimer()
     {
         yield return new WaitForSeconds(tempsInvicibilite);
         invincible = false;
+    }
+
+    IEnumerator onigiriTaken()
+    {
+        yield return new WaitForSeconds(tempsInvicibilite);
+        onigiriTook = false;
     }
 
     public void gameover()
