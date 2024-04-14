@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class move : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class move : MonoBehaviour
 
         if(touchAnOpponent())
         {
-            if(vies < 1)
+            if(vies < 0)
             {
                 //gameover
             }
@@ -83,11 +84,16 @@ public class move : MonoBehaviour
             vie2.SetActive(false);
             vie3.SetActive(false);
         }
-        else if(vies == 0)
+        else if(vies <= 0)
         {
             vie1.SetActive(false);
             vie2.SetActive(false);
             vie3.SetActive(false);
+        }
+
+        if(vies < 0)
+        {
+            gameover();
         }
 
     }
@@ -109,5 +115,10 @@ public class move : MonoBehaviour
     {
         yield return new WaitForSeconds(tempsInvicibilite);
         invincible = false;
+    }
+
+    public void gameover()
+    {
+        SceneManager.LoadScene(0);
     }
 }
