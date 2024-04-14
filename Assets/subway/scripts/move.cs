@@ -8,6 +8,12 @@ public class move : MonoBehaviour
     public float voie1 = -0.75f;
     public float voie2 = 0f;
     public float voie3 = 0.75f;
+    public int vies = 3;
+    public bool invincible;
+    public float tempsInvicibilite = 2f;
+    public GameObject vie1;
+    public GameObject vie2;
+    public GameObject vie3;
     
     // Start is called before the first frame update
     void Start()
@@ -47,7 +53,41 @@ public class move : MonoBehaviour
 
         if(touchAnOpponent())
         {
-            Debug.Log("Game Over !");
+            if(vies < 1)
+            {
+                //gameover
+            }
+            else
+            {
+                vies -= 1;
+            }
+            invincible = true;
+            StartCoroutine(InvincibilityTimer()); // Démarre le timer d'invincibilité
+        }
+
+        if(vies == 3)
+        {
+            vie1.SetActive(true);
+            vie2.SetActive(true);
+            vie3.SetActive(true);
+        }
+        else if(vies == 2)
+        {
+            vie1.SetActive(true);
+            vie2.SetActive(true);
+            vie3.SetActive(false);
+        }
+        else if(vies == 1)
+        {
+            vie1.SetActive(true);
+            vie2.SetActive(false);
+            vie3.SetActive(false);
+        }
+        else if(vies == 0)
+        {
+            vie1.SetActive(false);
+            vie2.SetActive(false);
+            vie3.SetActive(false);
         }
 
     }
@@ -57,11 +97,17 @@ public class move : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.5f))
         {
-            if (hit.collider.CompareTag("ennemi"))
+            if (hit.collider.CompareTag("ennemi") && !invincible)
             {
                 return true; 
             }
         }
         return false;
+    }
+
+    IEnumerator InvincibilityTimer()
+    {
+        yield return new WaitForSeconds(tempsInvicibilite);
+        invincible = false;
     }
 }
