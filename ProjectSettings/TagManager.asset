@@ -6,6 +6,7 @@ TagManager:
   tags:
   - jumper
   - fall
+  - ennemi
   layers:
   - Default
   - TransparentFX
