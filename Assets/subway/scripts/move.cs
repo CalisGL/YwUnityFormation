@@ -8,73 +8,48 @@ public class move : MonoBehaviour
     public float voie1 = -0.75f;
     public float voie2 = 0f;
     public float voie3 = 0.75f;
-    public bool invicible = false;
-
-    private Vector2 touchStartPos;
-    private bool isSwipe = false;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
     // Update is called once per frame
     void Update()
     {
-        // Détection du swipe
-        if (Input.touchCount > 0)
+        if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Touch touch = Input.GetTouch(0);
-            switch (touch.phase)
+            if(voie == 2)
             {
-                case TouchPhase.Began:
-                    touchStartPos = touch.position;
-                    isSwipe = true;
-                    break;
-                case TouchPhase.Moved:
-                    break;
-                case TouchPhase.Ended:
-                    if (isSwipe)
-                    {
-                        float swipeDistX = (touch.position.x - touchStartPos.x);
-                        if (Mathf.Abs(swipeDistX) > 50f) // Sensibilité du swipe
-                        {
-                            if (swipeDistX > 0) // Swipe vers la droite
-                            {
-                                MoveRight();
-                            }
-                            else // Swipe vers la gauche
-                            {
-                                MoveLeft();
-                            }
-                        }
-                    }
-                    break;
+                voie = 1;
+                transform.position = new Vector3(voie1, transform.position.y, transform.position.z);
+            }
+            else if(voie == 3)
+            {
+                voie = 2;
+                transform.position = new Vector3(voie2, transform.position.y, transform.position.z);
             }
         }
-    }
+        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if(voie == 2)
+            {
+                voie = 3;
+                transform.position = new Vector3(voie3, transform.position.y, transform.position.z);
+            }
+            else if(voie == 1)
+            {
+                voie = 2;
+                transform.position = new Vector3(voie2, transform.position.y, transform.position.z);
+            }
+        }
 
-    void MoveLeft()
-    {
-        if (voie == 2)
+        if(touchAnOpponent())
         {
-            voie = 1;
-            transform.position = new Vector3(voie1, transform.position.y, transform.position.z);
+            Debug.Log("Game Over !");
         }
-        else if (voie == 3)
-        {
-            voie = 2;
-            transform.position = new Vector3(voie2, transform.position.y, transform.position.z);
-        }
-    }
 
-    void MoveRight()
-    {
-        if (voie == 2)
-        {
-            voie = 3;
-            transform.position = new Vector3(voie3, transform.position.y, transform.position.z);
-        }
-        else if (voie == 1)
-        {
-            voie = 2;
-            transform.position = new Vector3(voie2, transform.position.y, transform.position.z);
-        }
     }
 
     bool touchAnOpponent()
