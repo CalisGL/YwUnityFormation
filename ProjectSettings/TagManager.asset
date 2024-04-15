@@ -8,6 +8,7 @@ TagManager:
   - fall
   - ennemi
   - onigiri
+  - "pi\xE8ce 1"
   layers:
   - Default
   - TransparentFX

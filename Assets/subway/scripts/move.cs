@@ -20,11 +20,15 @@ public class move : MonoBehaviour
     private Vector3 fp;   //First touch position
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
+    public score score;
+    public bool pieceTook;
+    public GameObject piece;
+    public int pieces;
     
     // Start is called before the first frame update
     void Start()
     {
-        dragDistance = Screen.height * 15 / 100;
+        dragDistance = Screen.height * 5 / 100;
     }
 
     // Update is called once per frame
@@ -62,6 +66,16 @@ public class move : MonoBehaviour
             onigiri.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
             onigiriTook = true;
             StartCoroutine(onigiriTaken());
+        }
+        if(touchAPiece())
+        {
+            if(!pieceTook)
+            {
+                pieces += 1;
+            }
+            piece.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
+            pieceTook = true;
+            StartCoroutine(pieceTaken());
         }
 
         if(vies == 3)
@@ -201,6 +215,19 @@ public class move : MonoBehaviour
         return false;
     }
 
+    bool touchAPiece()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.5f))
+        {
+            if (hit.collider.CompareTag("pièce 1"))
+            {
+                return true; 
+            }
+        }
+        return false;
+    }
+
     IEnumerator InvincibilityTimer()
     {
         yield return new WaitForSeconds(tempsInvicibilite);
@@ -213,8 +240,18 @@ public class move : MonoBehaviour
         onigiriTook = false;
     }
 
+    IEnumerator pieceTaken()
+    {
+        yield return new WaitForSeconds(tempsInvicibilite);
+        pieceTook = false;
+    }
+
     public void gameover()
     {
-        SceneManager.LoadScene(0);
+        PlayerPrefs.SetInt("Pieces", pieces);
+        PlayerPrefs.SetInt("PiecesTotal", pieces + PlayerPrefs.GetInt("PiecesTotal", 0));
+        PlayerPrefs.SetInt("Score", score.scoreValue);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene(2);
     }
 }

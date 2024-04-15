@@ -9,6 +9,10 @@ public class score : MonoBehaviour
     public float delay = 0.1f;
     private bool isScoring = false;
     public TextMeshProUGUI textMeshProUI;
+    public int bestScoreValue;
+    public TextMeshProUGUI bestScoreObject;
+    public TextMeshProUGUI pieces;
+    public move move;
 
     // Start is called before the first frame update
     void Start()
@@ -18,9 +22,25 @@ public class score : MonoBehaviour
 
     void Update()
     {
+        if (bestScoreObject != null)
+        {
+            // Même code que celui dans votre Update() existant
+            bestScoreValue = PlayerPrefs.GetInt("BestScore", 0);
+            if (scoreValue > bestScoreValue)
+            {
+                bestScoreValue = scoreValue;
+                PlayerPrefs.SetInt("BestScore", bestScoreValue);
+                PlayerPrefs.Save();
+            }
+            bestScoreObject.text = bestScoreValue.ToString();
+        }
         if (textMeshProUI != null) // Vérifie si la référence au TextMeshProUGUI est valide
         {
             textMeshProUI.text = scoreValue.ToString(); // Met à jour le texte avec la valeur du score
+        }
+        if (pieces != null) // Vérifie si la référence au TextMeshProUGUI est valide
+        {
+            pieces.text = move.pieces.ToString(); // Met à jour le texte avec la valeur du score
         }
     }
     // Coroutine pour augmenter automatiquement le score avec un délai
