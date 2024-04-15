@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/subway/test new.unity
-    guid: 162d036f906b05d4892bd99d371af99f
-  - enabled: 1
     path: Assets/subway/ecran titre.unity
     guid: 65f5d41b9aab97d438502e7cfa89361a
+  - enabled: 1
+    path: Assets/subway/test new.unity
+    guid: 162d036f906b05d4892bd99d371af99f
   - enabled: 1
     path: Assets/subway/gameover.unity
     guid: 698040154ff88ff46a9e2060283f0da7
