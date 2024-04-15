@@ -28,8 +28,22 @@ public class moveEnnemi : MonoBehaviour
 
     void Spawn(bool debut)
     {
-        // Génère un nombre aléatoire entre 1 et 3 pour choisir la voie
         voie = Random.Range(1, 4);
+
+        int childIndex = Random.Range(0, transform.childCount);
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            // Active seulement l'enfant sélectionné aléatoirement
+            if (i == childIndex)
+            {
+                transform.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
 
         if(!debut)
         {
