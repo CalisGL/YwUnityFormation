@@ -24,6 +24,10 @@ public class move : MonoBehaviour
     public bool pieceTook;
     public GameObject piece;
     public int pieces;
+    public float moveSpeed = 5f; // Vitesse de déplacement
+
+    private Vector3 targetPosition; // La position cible du déplacement
+    private bool isMoving = false; // Indique si le déplacement est en cours
     
     // Start is called before the first frame update
     void Start()
@@ -41,6 +45,18 @@ public class move : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.RightArrow))
         {
             moveRight();
+        }
+
+        if (isMoving)
+        {
+            // Déplace l'objet vers la position cible
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+            // Vérifie si l'objet est arrivé à la position cible
+            if (transform.position == targetPosition)
+            {
+                isMoving = false; // Fin du déplacement
+            }
         }
 
         if(touchAnOpponent())
@@ -162,31 +178,42 @@ public class move : MonoBehaviour
         }
     }
 
-    void moveRight()
+    public void moveRight()
     {
-        if(voie == 2)
+        if (!isMoving) // Vérifie si un déplacement n'est pas déjà en cours
         {
-            voie = 3;
-            transform.position = new Vector3(voie3, transform.position.y, transform.position.z);
-        }
-        else if(voie == 1)
-        {
-            voie = 2;
-            transform.position = new Vector3(voie2, transform.position.y, transform.position.z);
+            if (voie == 2)
+            {
+                targetPosition = new Vector3(voie3, transform.position.y, transform.position.z);
+                voie = 3;
+                isMoving = true; // Démarre le déplacement
+            }
+            else if (voie == 1)
+            {
+                targetPosition = new Vector3(voie2, transform.position.y, transform.position.z);
+                voie = 2;
+                isMoving = true; // Démarre le déplacement
+            }
         }
     }
 
-    void moveLeft()
+    // Fonction pour déplacer vers la gauche
+    public void moveLeft()
     {
-        if(voie == 2)
+        if (!isMoving) // Vérifie si un déplacement n'est pas déjà en cours
         {
-            voie = 1;
-            transform.position = new Vector3(voie1, transform.position.y, transform.position.z);
-        }
-        else if(voie == 3)
-        {
-            voie = 2;
-            transform.position = new Vector3(voie2, transform.position.y, transform.position.z);
+            if (voie == 2)
+            {
+                targetPosition = new Vector3(voie1, transform.position.y, transform.position.z);
+                voie = 1;
+                isMoving = true; // Démarre le déplacement
+            }
+            else if (voie == 3)
+            {
+                targetPosition = new Vector3(voie2, transform.position.y, transform.position.z);
+                voie = 2;
+                isMoving = true; // Démarre le déplacement
+            }
         }
     }
     bool touchAnOpponent()
