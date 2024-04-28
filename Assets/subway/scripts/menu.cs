@@ -22,10 +22,10 @@ public class menu : MonoBehaviour
         if(score)
         {
             scoreValue = PlayerPrefs.GetInt("Score", 0);
-            scoreObject.text = "Score : " + scoreValue.ToString();
+            scoreObject.text = scoreValue.ToString();
             if(piecesBool)
             {
-                pieces.text = "Pieces : " + PlayerPrefs.GetInt("Pieces", 0).ToString();
+                pieces.text = PlayerPrefs.GetInt("Pieces", 0).ToString();
             }
             piecesTotal.text = PlayerPrefs.GetInt("PiecesTotal", 0).ToString();
         }
