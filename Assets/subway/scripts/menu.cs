@@ -18,7 +18,7 @@ public class menu : MonoBehaviour
     void Start()
     {
         bestScoreValue = PlayerPrefs.GetInt("BestScore", 0);
-        bestScoreObject.text = "Record : " + bestScoreValue.ToString();
+        bestScoreObject.text = bestScoreValue.ToString();
         if(score)
         {
             scoreValue = PlayerPrefs.GetInt("Score", 0);
@@ -27,14 +27,14 @@ public class menu : MonoBehaviour
             {
                 pieces.text = "Pieces : " + PlayerPrefs.GetInt("Pieces", 0).ToString();
             }
-            piecesTotal.text = "PiecesTotal : " + PlayerPrefs.GetInt("PiecesTotal", 0).ToString();
+            piecesTotal.text = PlayerPrefs.GetInt("PiecesTotal", 0).ToString();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        piecesTotal.text = "PiecesTotal : " + PlayerPrefs.GetInt("PiecesTotal", 0).ToString();
+        piecesTotal.text = PlayerPrefs.GetInt("PiecesTotal", 0).ToString();
     }
 
     public void play(int map)

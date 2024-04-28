@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class pauseGameRun : MonoBehaviour
 {
@@ -31,5 +32,6 @@ public class pauseGameRun : MonoBehaviour
     public void quitter()
     {
         SceneManager.LoadScene(2);
+        Time.timeScale = 1f;
     }
 }

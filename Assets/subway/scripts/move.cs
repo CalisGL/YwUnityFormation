@@ -25,7 +25,7 @@ public class move : MonoBehaviour
     public GameObject piece;
     public int pieces;
     public float moveSpeed = 5f; // Vitesse de déplacement
-
+    public bool testmode = false;
     private Vector3 targetPosition; // La position cible du déplacement
     private bool isMoving = false; // Indique si le déplacement est en cours
     
@@ -67,7 +67,10 @@ public class move : MonoBehaviour
             }
             else
             {
-                vies -= 1;
+                if(!testmode)
+                {
+                    vies -= 1;
+                }
             }
             invincible = true;
             StartCoroutine(InvincibilityTimer()); // Démarre le timer d'invincibilité
