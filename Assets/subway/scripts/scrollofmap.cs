@@ -7,16 +7,32 @@ public class scrollmap : MonoBehaviour
     float speed = 1.0f;
     float distance = 5.0f;
     float elapsedTime = 0.0f;
+    public bool YYY;
 
     void Update()
     {
         elapsedTime += Time.deltaTime * speed;
-        transform.position += new Vector3(0, 0, 1) * distance * Time.deltaTime;
+        if(YYY)
+        {
+            transform.position += new Vector3(0, 0, 1) * distance * Time.deltaTime;
+        }
+        else
+        {
+            transform.position += new Vector3(0, 1, 0) * distance * Time.deltaTime;
+        }
 
         if (elapsedTime > 1.0f)
         {
             elapsedTime = 0.0f;
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            if(YYY)
+            {
+                transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            }
+            
         }
     }
 }

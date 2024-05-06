@@ -32,6 +32,7 @@ public class move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //PlayerPrefs.DeleteAll();
         dragDistance = Screen.height * 5 / 100;
     }
 
@@ -82,7 +83,7 @@ public class move : MonoBehaviour
             {
                 vies += 1;
             }
-            onigiri.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
+            onigiri.transform.position = new Vector3(transform.position.x, transform.position.y, -5);
             onigiriTook = true;
             StartCoroutine(onigiriTaken());
         }
@@ -92,7 +93,7 @@ public class move : MonoBehaviour
             {
                 pieces += 1;
             }
-            piece.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
+            piece.transform.position = new Vector3(transform.position.x, transform.position.y, -5);
             pieceTook = true;
             StartCoroutine(pieceTaken());
         }

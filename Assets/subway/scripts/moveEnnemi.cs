@@ -19,7 +19,7 @@ public class moveEnnemi : MonoBehaviour
         transform.Translate(Vector3.forward * vitesse * Time.deltaTime);
 
         // Vérifie si la position x est inférieure à -2
-        if (transform.position.z < -2f)
+        if (transform.position.z < -5f)
         {
             // Appelle la fonction pour réinitialiser la position
             Spawn(false);
