@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class menu : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class menu : MonoBehaviour
     public TextMeshProUGUI pieces;
     public TextMeshProUGUI piecesTotal;
     public bool piecesBool;
+    public Button boutonBingo;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,21 @@ public class menu : MonoBehaviour
             }
             piecesTotal.text = PlayerPrefs.GetInt("PiecesTotal", 0).ToString();
         }
+
+        if (PlayerPrefs.GetInt("PiecesTotal", 0) >= 30)
+        {
+            if(boutonBingo != null)
+            {
+                boutonBingo.interactable = true;
+            }
+        }
+        else
+        {
+            if(boutonBingo != null)
+            {
+                boutonBingo.interactable = false;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -42,11 +59,22 @@ public class menu : MonoBehaviour
         SceneManager.LoadScene(map);
     }
 
+    public void retirerPices(int nb)
+    {
+        PlayerPrefs.SetInt("PiecesTotal", PlayerPrefs.GetInt("PiecesTotal", 0) - nb);
+        PlayerPrefs.Save();
+    }
+
     public void reset()
     {
         bestScoreValue = 0;
         PlayerPrefs.SetInt("BestScore", bestScoreValue);
         PlayerPrefs.Save();
         bestScoreObject.text = "Record : " + bestScoreValue.ToString();
+    }
+
+    public void resetGame()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }

@@ -20,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/subway/bingo-kai play.unity
     guid: 3f822cffa90f3904c9d28ebf57fa1c78
+  - enabled: 1
+    path: Assets/subway/medallium.unity
+    guid: ae30e60cf98705d42a4bad19b0b2a581
+  - enabled: 1
+    path: Assets/subway/parametres.unity
+    guid: 9175774ed832c5348afa1817d5e8e4ad
   - enabled: 0
     path: Assets/Scenes/worldmap.unity
     guid: 5bcc9a99bcca1af40b8892b9ec4accec

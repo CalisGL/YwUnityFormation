@@ -91,7 +91,9 @@ public class move : MonoBehaviour
         {
             if(!pieceTook)
             {
-                pieces += 1;
+                float nbPiece = 1 + (score.scoreValue / 500);
+                int nbPieceInt = Mathf.RoundToInt(nbPiece); // Utilisez Mathf.RoundToInt pour arrondir un float à un entier
+                pieces += nbPieceInt; 
             }
             piece.transform.position = new Vector3(transform.position.x, transform.position.y, -5);
             pieceTook = true;

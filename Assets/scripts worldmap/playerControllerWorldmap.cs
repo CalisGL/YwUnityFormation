@@ -2,105 +2,52 @@ using UnityEngine;
 
 public class playerControllerWorldmap : MonoBehaviour
 {
-    public float vitesseDeplacementMarche = 5f; // Vitesse de déplacement en marchant
-    public float vitesseDeplacementCourse = 10f; // Vitesse de déplacement en courant
-    public float puissanceSaut = 5f;
-    public KeyCode toucheCourse = KeyCode.LeftShift; // Touche pour courir
+    public float vitesseDeplacement = 5f; // Vitesse de déplacement
+    public float puissanceSaut = 5f; // Puissance du saut
     public KeyCode toucheSaut = KeyCode.Space; // Touche pour sauter
-    public GameObject rotate;
-    public int animationYokai; // Variable pour stocker l'animation à jouer
-    public bool worldmap = false;
+    public GameObject rotate; // Objet à faire pivoter
+    public bool worldmap = false; // Indicateur de monde
+    public float joystickSensitivity = 0.1f; // Sensibilité du joystick
 
-    private bool enMarche; // Indique si le personnage marche
-    private bool enCourse; // Indique si le personnage court
-    private float vitesseDeplacement = 5f;
     private Rigidbody rb; // Référence au Rigidbody attaché au joueur
+    private Vector3 movementDirection; // Direction du mouvement
 
     void Start()
     {
-        animationYokai = 0; // Au début, aucune animation
         rb = GetComponent<Rigidbody>(); // Récupérer le Rigidbody
     }
 
     void Update()
     {
-        // Si la touche de course est enfoncée, utiliser la vitesse de course
-        if (Input.GetKey(toucheCourse) && enMarche == true)
-        {
-            enCourse = true;
-            vitesseDeplacement = vitesseDeplacementCourse;
-        }
-        else
-        {
-            enCourse = false;
-            vitesseDeplacement = vitesseDeplacementMarche;
-        }
-
-        // Déplacement vers l'avant
-        if (Input.GetKey(KeyCode.D))
-        {
-            if (CanWalkForward())
-            {
-                transform.Translate(Vector3.forward * vitesseDeplacement * Time.deltaTime);
-                rotate.transform.rotation = Quaternion.Euler(0f, 0f, 0f); // Rotation dans l'axe y = 0
-                enMarche = true;
-            }
-        }
-        else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.A)) // Déplacement vers l'arrière
-        {
-            if (CanWalkBack())
-            {
-                transform.Translate(Vector3.back * vitesseDeplacement * Time.deltaTime);
-                rotate.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                enMarche = true;
-            }
-        }
-        else if (Input.GetKey(KeyCode.S) && worldmap == true) // Déplacement vers l'arrière
-        {
-            if (1 == 1)
-            {
-                transform.Translate(Vector3.right * vitesseDeplacement * Time.deltaTime);
-                rotate.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                enMarche = true;
-            }
-        }
-        else if ((Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W)) && worldmap == true) // Déplacement vers l'arrière
-        {
-            if (1 == 1)
-            {
-                transform.Translate(Vector3.left * vitesseDeplacement * Time.deltaTime);
-                rotate.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-                enMarche = true;
-            }
-        }
-        else
-        {
-            enMarche = false;
-        }
+        // Déplacement du personnage en fonction de la direction du joystick
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        movementDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
 
         // Saut
         if (Input.GetKeyDown(toucheSaut) && ToucheUnJumper())
         {
             Jump();
         }
+    }
 
-        // Déterminer quelle animation doit être jouée
-        if (enCourse)
-        {
-            animationYokai = 2; // Animation de course
-        }
-        else if (enMarche)
-        {
-            animationYokai = 1; // Animation de marche
-        }
-        else
-        {
-            animationYokai = 0; // Aucune animation
-        }
+    void FixedUpdate()
+    {
+        // Déplacer le personnage en fonction de la direction du joystick
+        MoveCharacter(movementDirection);
+    }
 
-        if (persoTombe())
+    void MoveCharacter(Vector3 direction)
+    {
+        if (direction.magnitude >= joystickSensitivity)
         {
-            transform.position = Vector3.zero;
+            // Rotation du personnage
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            rotate.transform.rotation = Quaternion.Lerp(rotate.transform.rotation, targetRotation, 0.1f);
+
+            // Déplacement du personnage
+            Vector3 moveDirection = rotate.transform.forward * vitesseDeplacement * Time.fixedDeltaTime;
+            rb.MovePosition(transform.position + moveDirection);
         }
     }
 
@@ -125,49 +72,6 @@ public class playerControllerWorldmap : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.1f)) // Ajustez le rayon si nécessaire
         {
             if (hit.collider.CompareTag("jumper"))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool CanWalkForward()
-    {
-        // Raycast vers le bas pour détecter un objet avec le tag "jumper"
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 0.5f)) // Ajustez le rayon si nécessaire
-        {
-            if (hit.collider.CompareTag("jumper"))
-            {
-                return false; 
-            }
-        }
-        return true;
-    }
-
-    bool CanWalkBack()
-    {
-        // Raycast vers le bas pour détecter un objet avec le tag "jumper"
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.back, out hit, 0.5f)) // Ajustez le rayon si nécessaire
-        {
-            if (hit.collider.CompareTag("jumper"))
-            {
-                return false; 
-            }
-        }
-        return true;
-    }
-
-
-    bool persoTombe()
-    {
-        // Raycast vers le bas pour détecter un objet avec le tag "jumper"
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.05f)) // Ajustez le rayon si nécessaire
-        {
-            if (hit.collider.CompareTag("fall"))
             {
                 return true;
             }
